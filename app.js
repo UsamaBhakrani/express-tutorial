@@ -10,6 +10,9 @@ app.use(express.static("./methods-public"));
 // parse formdata
 app.use(express.urlencoded({ extended: false }));
 
+// pasrse Json
+app.use(express.json());
+
 app.get("/api/people", (req, res) =>
   res.status(200).json({ success: true, data: people })
 );
