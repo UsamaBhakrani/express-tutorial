@@ -19,7 +19,10 @@ app.get("/api/people", (req, res) =>
 
 // Javascript Post
 app.post("/api/people", (req, res) => {
-  res.status(201).send("Success");
+  if (!req.body.name) {
+    return res.status(404).json("Please Provide User Name");
+  }
+  res.status(200).json({ name: req.body.name, id: people.length + 1 });
 });
 
 // Index.html Post
