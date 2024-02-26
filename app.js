@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
 const port = 8080;
-const logger = require("./logger");
+const logger = require("./middleware/logger");
+const authorize = require("./middleware/authorize");
 
-app.use(logger);
+app.use([logger, authorize]);
 
 app.get("/", (req, res) => {
   res.send("Home");
