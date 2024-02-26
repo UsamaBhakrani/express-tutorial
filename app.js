@@ -1,17 +1,30 @@
 const express = require("express");
 const app = express();
 const port = 8080;
-const logger = require("./middleware/logger");
-const authorize = require("./middleware/authorize");
+let { people } = require("./data");
 
-app.use([logger, authorize]);
+// static Assets
 
-app.get("/", (req, res) => {
-  res.send("Home");
+app.use(express.static("./methods-public"));
+
+// parse formdata
+app.use(express.urlencoded({ extended: false }));
+
+app.get("/api/people", (req, res) =>
+  res.status(200).json({ success: true, data: people })
+);
+
+// Javascript Post
+app.post("/api/people", (req, res) => {
+  res.status(201).send("Success");
 });
 
-app.get("/about", (req, res) => res.send("About"));
-
-app.all("*", (req, res) => res.status(404).send("404 not Found"));
+// Index.html Post
+app.post("/login", (req, res) => {
+  if (!req.body.name) {
+    return res.status(404).send("Please Provide User Name");
+  }
+  res.status(200).json({ name: req.body.name, id: people.length + 1 });
+});
 
 app.listen(port, () => console.log("server running on port", port));
